@@ -17,7 +17,7 @@ args = parser.parse_args()
 VAL = 'val'
 TRAIN = 'train'
 TEST = 'test'
-RESIZED = 'resized'
+CROPPED = 'cropped'
 OLD_SIZE = 128
 NEW_SIZE = 100
 
@@ -25,14 +25,14 @@ def mkdir_dir(path):
     """ Cria os diretórios correspondentes para salvar as imagens recortadas. """
     # Remove a barra final do path.
     path_new = path[:-1]
-    new_path_val = path_new+'_'+RESIZED+'/'+VAL
-    new_path_train = path_new+'_'+RESIZED+'/'+TRAIN
-    new_path_test = path_new+'_'+RESIZED+'/'+TEST
+    new_path_val = path_new+'_'+CROPPED+'/'+VAL
+    new_path_train = path_new+'_'+CROPPED+'/'+TRAIN
+    new_path_test = path_new+'_'+CROPPED+'/'+TEST
     os.makedirs(new_path_val,exist_ok=True)
     os.makedirs(new_path_train,exist_ok=True)
     os.makedirs(new_path_test,exist_ok=True)
     return new_path_train, new_path_val, new_path_test
-	#print(os.path.normpath(path+os.sep+os.pardir))
+    #print(os.path.normpath(path+os.sep+os.pardir))
 
 
 def crop_image(img_path, save_path):
@@ -56,11 +56,11 @@ def main(path):
     for it in [train_imgs, val_imgs, test_imgs]:
         save_path = ''
         if i==0:
-    	    print('Recortando imagens do treino')
-    	    save_path = new_path_train
+            print('Recortando imagens do treino')
+            save_path = new_path_train
         elif i==1:
-	        print('Recortando imagens da validação')
-	        save_path = new_path_val
+            print('Recortando imagens da validação')
+            save_path = new_path_val
         else:
             print('Recortando imagens do teste')
             save_path = new_path_test
