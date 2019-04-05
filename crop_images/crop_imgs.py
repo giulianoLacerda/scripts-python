@@ -43,31 +43,41 @@ def crop_image(img_path, save_path):
     cv2.imwrite(save_path, croped_img)
 
 
+def mkdir_dir_classes(path, classes):
+    for it in classes:
+        os.makedirs(path+'/'+it, exist_ok=True)
+
 def main(path):
+    classes = os.listdir(path+TRAIN)
+
     # Cria os diretórios correspondentes, caso não existam.
     new_path_train, new_path_val, new_path_test = mkdir_dir(args.path)
+    mkdir_dir_classes(new_path_train, os.listdir(path+TRAIN))
+    mkdir_dir_classes(new_path_val, os.listdir(path+VAL))
+    mkdir_dir_classes(new_path_test, os.listdir(path+TEST))
 
-    # Para cada pasta (val,train e test) obtém um vetor com o caminho das imagens em png.
-    val_imgs = glob.glob(path+VAL+'/*.png')
-    train_imgs = glob.glob(path+TRAIN+'/*.png')
-    test_imgs = glob.glob(path+TEST+'/*.png')
-
-    i = 0
-    for it in [train_imgs, val_imgs, test_imgs]:
-        save_path = ''
-        if i==0:
-            print('Recortando imagens do treino')
-            save_path = new_path_train
-        elif i==1:
-            print('Recortando imagens da validação')
-            save_path = new_path_val
-        else:
-            print('Recortando imagens do teste')
-            save_path = new_path_test
-        for itt in zip(it, tqdm(range(len(it)))):
+    for it in classes:
+        print('Recortando imagens da classe: ',it)
+        print('Conjunto de treino')
+        path_imgs = glob.glob(path+TRAIN+'/'+it+'/*.png')
+        save_path = new_path_train+'/'+it
+        for itt in zip(path_imgs, tqdm(range(len(path_imgs)))):
             img_name = itt[0].split('/')[-1]
             crop_image(itt[0], save_path+'/'+img_name)
-        i += 1
+
+        print('Conjunto de validação')
+        path_imgs = glob.glob(path+VAL+'/'+it+'/*.png')
+        save_path = new_path_val+'/'+it
+        for itt in zip(path_imgs, tqdm(range(len(path_imgs)))):
+            img_name = itt[0].split('/')[-1]
+            crop_image(itt[0], save_path+'/'+img_name)
+
+        print('Conjunto de teste')
+        path_imgs = glob.glob(path+TEST+'/'+it+'/*.png')
+        save_path = new_path_test+'/'+it
+        for itt in zip(path_imgs, tqdm(range(len(path_imgs)))):
+            img_name = itt[0].split('/')[-1]
+            crop_image(itt[0], save_path+'/'+img_name)
 
 if __name__ == '__main__':
     main(args.path)
