@@ -90,6 +90,6 @@ def base_separate(path_base, path_to_save):
                 exit(1)
 
 if __name__ == "__main__":
-    #download_folder_from_s3(BUCKET,FOLDER,'/home/kaffee/Imagens/Cofness/DownloadS3')
+    download_folder_from_s3(BUCKET,FOLDER,'/home/kaffee/Imagens/Cofness/DownloadS3')
     base_separate('/home/kaffee/Imagens/Cofness/DownloadS3/dados/',
                 '/home/kaffee/Imagens/Cofness/DownloadS3/dados_separados/')
